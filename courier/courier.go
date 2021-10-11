@@ -224,11 +224,11 @@ func (m *Courier) DispatchQueue(ctx context.Context) error {
 		var msg = messages[k]
 		if err := m.DispatchMessage(ctx, msg); err != nil {
 			for _, replace := range messages[k:] {
-				if err := m.d.CourierPersister().SetMessageStatus(ctx, replace.ID, MessageStatusQueued); err != nil {
+				if err := m.d.CourierPersister().SetMessageStatus(ctx, replace.ID, MessageStatusFailed); err != nil {
 					m.d.Logger().
 						WithError(err).
 						WithField("message_id", replace.ID).
-						Error(`Unable to reset the failed message's status to "queued".`)
+						Error(`Unable to reset the failed message's status to "failed".`)
 				}
 			}
 
